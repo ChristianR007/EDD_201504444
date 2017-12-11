@@ -10,12 +10,12 @@
 using namespace std;
 
 struct nodoDoble{
-    string dato;
+    int dato;
     nodoDoble* siguiente;
     nodoDoble* atras;
 } *primeroD, *ultimoD;
 
-void InsertarDoble(string entrada){
+void InsertarDoble(int entrada){
     nodoDoble* nuevo = (nodoDoble*) malloc(sizeof(nodoDoble));
     nuevo->dato = entrada;
     if(primeroD==NULL){
@@ -33,13 +33,12 @@ void InsertarDoble(string entrada){
 
 void MostrarDoble(){
     nodoDoble* aux = primeroD;
-    string mos;
     if(primeroD==NULL){
         printf("-------------------->> Se encuentra vacia la lista doblemente enlazada <<--------------------");
     } else {
         printf(" ->> ");
         while (aux!=NULL) {
-            printf("[ %s ]",aux->dato.c_str());
+            printf("[ %d ]",aux->dato);
             aux=aux->siguiente;
             if(aux!=NULL){
                 printf(" <-> ");
@@ -49,7 +48,7 @@ void MostrarDoble(){
     free(aux);
 }
 
-bool BuscarDoble(string dato){
+bool BuscarDoble(int dato){
     nodoDoble* aux = primeroD;
     bool bandera = false;
     while(aux!=NULL){
@@ -63,10 +62,13 @@ bool BuscarDoble(string dato){
     return bandera;
 }
 
-void EliminarDoble(string valor){
+void EliminarDoble(int valor){
     nodoDoble* aux = NULL;
     if(BuscarDoble(valor)==true){
-        if(primeroD->dato==valor){
+        if(primeroD == ultimoD){
+            primeroD = NULL;
+            ultimoD = NULL;
+        }else if(primeroD->dato==valor){
             aux=primeroD->siguiente;
             aux->atras=NULL;
             primeroD->siguiente=NULL;
@@ -104,7 +106,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     int n, opcion;
-    char string[256];
+    //char string[256];
 
         do
         {
@@ -120,9 +122,9 @@ int main(int argc, char *argv[])
             switch ( opcion )
             {
                 case 1: printf( "\n   Introduzca un dato: ", 163 );
-                        scanf( "%s" , string );
-                        InsertarDoble(string);
-                        printf( "\n\n");
+                        scanf( "%d" , &n );
+                        InsertarDoble(n);
+                        printf("\n\n");
                         break;
 
                 case 2: printf( "\n   Estructura: ", 163 );
@@ -131,9 +133,8 @@ int main(int argc, char *argv[])
                         break;
 
                 case 3: printf( "\n   Introduzca un n%cmero entero: ", 163 );
-                        scanf( "%s", string );
-                        EliminarDoble(string);
-                        //printf( "\n   El cuadrado de %d es %d\n\n", n, ( int ) pow( n, 2 ) );
+                        scanf( "%d", &n );
+                        EliminarDoble(n);
              }
 
         } while ( opcion != 4 );
