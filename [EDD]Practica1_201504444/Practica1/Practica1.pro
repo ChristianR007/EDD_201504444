@@ -27,12 +27,24 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     colaaviones.cpp \
-    colapasajeros.cpp
+    colapasajeros.cpp \
+    escritorios.cpp \
+    maletas.cpp \
+    timer.cpp \
+    piladocumentos.cpp \
+    listacircular.cpp \
+    listasimple.cpp
 
 HEADERS += \
         mainwindow.h \
     colaaviones.h \
-    colapasajeros.h
+    colapasajeros.h \
+    escritorios.h \
+    maletas.h \
+    timer.h \
+    piladocumentos.h \
+    listacircular.h \
+    listasimple.h
 
 FORMS += \
         mainwindow.ui

@@ -66,16 +66,22 @@ bool colaAvion::BuscarAvion(colaAvion * colaA, string nombre){
     return bandera;
 }
 void colaAvion::EliminarAvion(colaAvion * colaA){
-    nodoAvion *aux = colaA->primero;
-    colaA->primero = aux->atras;
-    colaA->primero->siguiente = NULL;
-    aux->atras = NULL;
-    free(aux);
+    if(colaA->ultimo->siguiente != NULL){
+        nodoAvion *aux = colaA->primero;
+        colaA->primero = aux->atras;
+        colaA->primero->siguiente = NULL;
+        aux->atras = NULL;
+        free(aux);
+    } else{
+        if(colaA->primero != NULL){
+                colaA->primero = NULL;
+                colaA->ultimo = NULL;
+            }
+    }
 }
 
 string colaAvion::verificar(colaAvion *colaA, int tiempo){
     if(QString::number(1).toStdString() == colaA->primero->Desabordaje){
-        
         return colaA->primero->Pasajeros;
     } else{
         int nn = QString::fromStdString(colaA->primero->Desabordaje).toInt() - 1;

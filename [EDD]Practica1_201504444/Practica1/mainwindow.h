@@ -25,7 +25,20 @@ private slots:
 
     void crearGraficaAviones();
 
-    void crearPasajeros(colaPasajero *colaP, string Id, string Maletas, string Documentos, string posEntra);
+    void crearGraficaPasajeros();
+
+    void crearGraficaEscritorios();
+
+    void crearGraficaMaletas();
+
+    void crearPasajeros(colaPasajero *colaP, int numPasajeros);
+
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_5_clicked();
+
+    void on_pushButton_6_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
