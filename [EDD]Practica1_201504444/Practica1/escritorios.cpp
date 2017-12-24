@@ -37,6 +37,34 @@ void listaEscritorio::InsertarEscritorio(listaEscritorio *colaEsc, string letraE
         }
     }
 }
+
+            /*else if(tmp->siguiente == NULL){
+                colaEsc->ultimo->siguiente = nuevo;
+                nuevo->atras = colaEsc->ultimo;
+                nuevo->siguiente = NULL;
+                colaEsc->ultimo = nuevo;
+            } else{
+                tmp = tmp->siguiente;
+            }
+        }
+
+
+
+
+    }
+}
+
+/*
+else{
+        if(colaEsc->BuscarEscritorio(colaEsc, letraEscritorio)==false){
+            colaEsc->ultimo->siguiente = nuevo;
+            nuevo->atras = colaEsc->ultimo;
+            nuevo->siguiente = NULL;
+            colaEsc->ultimo = nuevo;
+        }
+    }
+*/
+
 int pt=1;
 string listaEscritorio::InsertarDocumentos(listaEscritorio *colaEsc, string nombre, int id){
     string rr;
