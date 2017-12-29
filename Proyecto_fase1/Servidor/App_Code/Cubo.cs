@@ -235,8 +235,8 @@ public class Cubo
         }
         return nuevo;
     }
-
-    public Nodo ingresarAMatriz(string dominio, string letra, string dato)
+    // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
+    public Nodo ingresarAMatriz(string dominio, string letra, string jugador, string unidad, string destruida, string col, string fil)
     {
         if ((existeColumna(dominio) == false) && (existeFila(letra) == false))
         {
@@ -245,7 +245,11 @@ public class Cubo
             Nodo punteroCol = crearCabezaraDominio(dominio);
             Nodo punterofil = crearCabezeraDeLetras(letra);
             Nodo nuevo = new Nodo();
-            nuevo.dato = dato;
+            nuevo.Jugador = jugador;
+            nuevo.dato = unidad;
+            nuevo.destruida = destruida;
+            nuevo.col = col;
+            nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
             punteroCol.abajo = nuevo;
@@ -261,7 +265,11 @@ public class Cubo
             Nodo punterofil = encuentraFila(letra);
             Nodo posicion = recorreLaFilaDeLetra(punterofil);
             Nodo nuevo = new Nodo();
-            nuevo.dato = dato;
+            nuevo.Jugador = jugador;
+            nuevo.dato = unidad;
+            nuevo.destruida = destruida;
+            nuevo.col = col;
+            nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
             punteroCol.abajo = nuevo;
@@ -276,7 +284,11 @@ public class Cubo
             Nodo punteroCol = encuentraColumna(dominio);
             Nodo punterofil = crearCabezeraDeLetras(letra);
             Nodo nuevo = new Nodo();
-            nuevo.dato = dato;
+            nuevo.Jugador = jugador;
+            nuevo.dato = unidad;
+            nuevo.destruida = destruida;
+            nuevo.col = col;
+            nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
             Nodo nodoColocado = recorreLaColumnaDeDominios(punteroCol, nuevo);
@@ -292,7 +304,11 @@ public class Cubo
             Nodo punterofil = encuentraFila(letra);
             punterofil.letra = letra;
             Nodo nuevo = new Nodo();
-            nuevo.dato = dato;
+            nuevo.Jugador = jugador;
+            nuevo.dato = unidad;
+            nuevo.destruida = destruida;
+            nuevo.col = col;
+            nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
             Nodo colFil = colocaDatoEnFilaConPosicionCorrecta(punterofil, dominio, nuevo);
@@ -929,13 +945,14 @@ public class Cubo
         return retorno;
     }
     int x = 0;
-    public string textoParaGraficarMatriz()
+    public string textoParaGraficarMatriz()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
     {
         Nodo auxFil = raiz;
-        String retorno = "digraph G {\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 1\";\n";
+        String retorno = "digraph G {\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;";
+        retorno += "\nlabel = \"Nivel " + "x" + "\";\n"; 
         String min = "";
-        retorno += "root -> \"" + raiz.abajo.dato + "\";\n";
-        retorno += "root -> \"" + raiz.siguiente.dato + "\";\n";
+        retorno += "root -> \"" + raiz.abajo.dato + "\n" + raiz.abajo.Jugador + "\n" + raiz.abajo.col + "  " + raiz.abajo.fil + "\";\n";
+        retorno += "root -> \"" + raiz.siguiente.dato + "\n" + raiz.siguiente.Jugador + "\n" + raiz.siguiente.col + "  " + raiz.siguiente.fil + "\";\n";
         while (auxFil != null)
         {
             Nodo aux2 = auxFil;
@@ -944,8 +961,8 @@ public class Cubo
                 if (aux2.adelante != null)
                 {
                     if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.adelante.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\"->\"" + textoParaMatrizLetra3D(aux2) + "\";\n";
+                    {   //"Pieza: " + raiz.abajo.dato + "\nJugador: " + raiz.abajo.Jugador + "\nCoordenadas: (" + raiz.abajo.columna + ", " + raiz.abajo.fila + ")
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + textoParaMatrizLetra3D(aux2) + "\";\n";
                     }
 
                 }
@@ -953,7 +970,7 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.abajo.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\"->\"" + aux2.abajo.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.abajo.dato + "\n" + aux2.abajo.Jugador + "\n" + aux2.abajo.col + "  " + aux2.abajo.fil + "\";\n";
                     }
 
                 }
@@ -961,7 +978,7 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                     }
 
                 }
@@ -969,7 +986,7 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.arriba.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\"->\"" + aux2.arriba.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.arriba.dato + "\n" + aux2.arriba.Jugador + "\n" + aux2.arriba.col + "  " + aux2.arriba.fil + "\";\n";
                     }
 
                 }
@@ -977,7 +994,7 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                     }
 
                 }
@@ -985,14 +1002,14 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\"->\"" + aux2.siguiente.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";\n";
                         if (x == 0)
                         {
-                            min += "\"" + aux2.dato + "\";\n";
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                         }
                         else
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\"; \"" + aux2.siguiente.dato + "\";}\n";
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"; \"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";}\n";
                         }
                     }
 
@@ -1001,14 +1018,14 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                         if (x == 0)
                         {
-                            min += "\"" + aux2.dato + "\";\n";
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                         }
                         else
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\";}\n";
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
                         }
                     }
 
@@ -1017,14 +1034,14 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.anterior.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\"->\"" + aux2.anterior.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.anterior.dato + "\n" + aux2.anterior.Jugador + "\n" + aux2.anterior.col + "  " + aux2.anterior.fil + "\";\n";
                         if (x == 0)
                         {
-                            min += "\"" + aux2.dato + "\";\n";
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                         }
                         else
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\";}\n";
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
                         }
                     }
                 }
@@ -1032,10 +1049,10 @@ public class Cubo
                 {
                     if (!string.IsNullOrEmpty(aux2.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\";\n";
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
                         if (!string.IsNullOrEmpty(aux2.dato))
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\";}\n";
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
                         }
                     }
 
@@ -1050,58 +1067,6 @@ public class Cubo
         return retorno;
     }
 
-    public string ff()
-    {
-        Nodo auxFil = raiz;
-        String retorno = "digraph G {";
-        while (auxFil != null)
-        {
-            Nodo aux2 = auxFil;
-            while (aux2 != null)
-            {
-                if (aux2.adelante != null)
-                {
-                    retorno += aux2.dato + "->" + textoParaMatrizLetra3D(aux2);
-                }
-                if (aux2.abajo != null)
-                {
-                    retorno += aux2.dato + "->" + aux2.abajo.dato + ";";
-                }
-                else
-                {
-                    retorno += aux2.dato + ";";
-                }
-                if (aux2.arriba != null)
-                {
-                    retorno += aux2.dato + "->" + aux2.arriba.dato + ";";
-                }
-                else
-                {
-                    retorno += aux2.dato + ";";
-                }
-                if (aux2.siguiente != null)
-                {
-                    retorno += aux2.dato + "->" + aux2.siguiente.dato + ";";
-                }
-                else
-                {
-                    retorno += aux2.dato + ";";
-                }
-                if (aux2.anterior != null)
-                {
-                    retorno += aux2.dato + "->" + aux2.anterior.dato + ";";
-                }
-                else
-                {
-                    retorno += aux2.dato + ";";
-                }
-                aux2 = aux2.siguiente;
-            }
-            auxFil = auxFil.abajo;
-        }
-
-        retorno += "}";
-        return retorno;
-    }
+    
     //Fin Metodos   
 }

@@ -14,7 +14,12 @@
         }
         body {
             background-color: steelblue;
-            height: 204px;
+            height: 489px;
+        }
+
+        #TextArea1 {
+            height: 320px;
+            width: 562px;
         }
 
     </style>
@@ -26,7 +31,8 @@
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         <p>
             <asp:Button ID="Button1" runat="server" OnClick="Button1_Click1" Text="Button" />
-        </p>
+            </p>
+        <asp:TextBox ID="TextBox1" runat="server" Height="305px" Width="586px"></asp:TextBox>
     </form>
 </body>
 </html>

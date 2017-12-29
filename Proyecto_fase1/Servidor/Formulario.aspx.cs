@@ -15,8 +15,13 @@ public partial class Formulario : System.Web.UI.Page
 
     protected void Button1_Click1(object sender, EventArgs e)
     {
-        ServiceReference1.ServiceSoapClient miWebserv = new ServiceReference1.ServiceSoapClient();
-        Label1.Text = miWebserv.Prueba();
-        Response.Redirect("Login.aspx");
+        ServiceReference2.ServiceSoapClient metodos = new ServiceReference2.ServiceSoapClient();
+
+        //Label1.Text = metodos.Prueba();
+        TextBox1.Text = metodos.CargaMaestra("usuarios");
+        TextBox1.Text = metodos.CargaMaestra("juegos");
+        TextBox1.Text = metodos.CargaMaestra("tablero");
+
+        //Response.Redirect("Login.aspx");
     }
 }

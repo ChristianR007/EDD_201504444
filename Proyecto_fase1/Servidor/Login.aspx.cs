@@ -14,6 +14,22 @@ public partial class Login : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Image1.Visible = true;
+
+        // Administrador por defecto
+        if ((TextBox1.Text == "Admin") && (TextBox2.Text == "Admin"))
+        {
+            Response.Redirect("Administrador.aspx");
+        }
+        else {
+            if (TextBox1.Text != "Admin") {
+                TextBox1.Text = "Nombre Incorrectos";
+                TextBox2.Text = "";
+            } else if (TextBox2.Text != "Admin") {
+                TextBox2.Text = "Contraseña Incorrectos";
+                TextBox1.Text = "";
+            }
+            
+        }
+        
     }
 }

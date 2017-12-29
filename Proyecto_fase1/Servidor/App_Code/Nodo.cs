@@ -7,12 +7,18 @@ using System.Web;
 /// Descripción breve de Nodo
 /// </summary>
 public class Nodo
-{
+{   //jugador,columna,fila,unidad,"destruida(0 si,1 no)"
     public int columna = 0;
     public int fila = 0;
     public String dato = "";
     public String dom = "";
     public String letra = "";
+
+    public String Jugador = "";
+    public String destruida = "";
+    public String fil = "";
+    public String col = "";
+
     public Nodo arriba;
     public Nodo abajo;
     public Nodo anterior;

@@ -10,16 +10,24 @@ public class listaDoble
 {
     class NodoD
     {
-        public string nombre;
+        public string jugador;
+        public string uDesplegables;
+        public string uSobrevivientes;
+        public string uDestruidas;
+        public string Gano;
         public NodoD siguiente;
         public NodoD atras;
     }
     NodoD primero = null;
 
-    public void Insertar(listaDoble ld, string Vnombre)
+    public void Insertar(listaDoble ld, string jug, string desp, string sobre, string dest, string gano)
     {
         NodoD nuevo = new NodoD();
-        nuevo.nombre = Vnombre;
+        nuevo.jugador = jug;
+        nuevo.uDesplegables = desp;
+        nuevo.uSobrevivientes = sobre;
+        nuevo.uDestruidas = dest;
+        nuevo.Gano = gano;
         if (ld.primero == null)
         {
             ld.primero = nuevo;
@@ -45,12 +53,12 @@ public class listaDoble
         NodoD tmp = ld.primero;
         string cuerpo = "";
         while (tmp != null)
-        {
-            cuerpo += "\"" + tmp.nombre + "\";\n";
+        {   
+            cuerpo += "\"Nombre Jugador: " + tmp.jugador + "\nUnidades Desplegables: " + tmp.uDesplegables + "\nUnidades Sobrevivientes: " + tmp.uSobrevivientes + "\nUnidades Destruidas: " + tmp.uDestruidas + "\nGano: " + tmp.Gano + "\";\n";
             if (tmp.siguiente != null)
             {
-                cuerpo += "\"" + tmp.nombre + "\" -> \"" + tmp.siguiente.nombre + "\";\n";
-                cuerpo += "\"" + tmp.siguiente.nombre + "\" -> \"" + tmp.nombre + "\";\n";
+                cuerpo += "\"Nombre Jugador: " + tmp.jugador + "\nUnidades Desplegables: " + tmp.uDesplegables + "\nUnidades Sobrevivientes: " + tmp.uSobrevivientes + "\nUnidades Destruidas: " + tmp.uDestruidas + "\nGano: " + tmp.Gano + "\" -> \"Nombre Jugador: " + tmp.siguiente.jugador + "\nUnidades Desplegables: " + tmp.siguiente.uDesplegables + "\nUnidades Sobrevivientes: " + tmp.siguiente.uSobrevivientes + "\nUnidades Destruidas: " + tmp.siguiente.uDestruidas + "\nGano: " + tmp.siguiente.Gano + "\";\n";
+                cuerpo += "\"Nombre Jugador: " + tmp.siguiente.jugador + "\nUnidades Desplegables: " + tmp.siguiente.uDesplegables + "\nUnidades Sobrevivientes: " + tmp.siguiente.uSobrevivientes + "\nUnidades Destruidas: " + tmp.siguiente.uDestruidas + "\nGano: " + tmp.siguiente.Gano + "\" -> \"Nombre Jugador: " + tmp.jugador + "\nUnidades Desplegables: " + tmp.uDesplegables + "\nUnidades Sobrevivientes: " + tmp.uSobrevivientes + "\nUnidades Destruidas: " + tmp.uDestruidas + "\nGano: " + tmp.Gano + "\";\n";
             }
             tmp = tmp.siguiente;
         }
