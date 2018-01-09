@@ -236,12 +236,12 @@ public class Cubo
         return nuevo;
     }
     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
-    public Nodo ingresarAMatriz(string dominio, string letra, string jugador, string unidad, string destruida, string col, string fil)
-    {
+    public Nodo ingresarAMatriz(string dominio, string letra, string jugador, string unidad, string destruida, string col, string fil, string nivel, int movimiento, int alcance, int daNo, int vida, bool arriba, bool abajo, bool izquierda, bool derecha, bool adelante, bool atras)
+    {   // jugabilidad  int movimiento, int alcance, int daNo, int vida, bool arriba, bool abajo, bool izquierda, bool derecha, bool adelante, bool atras
         if ((existeColumna(dominio) == false) && (existeFila(letra) == false))
         {
             // Primer Caso
-            Console.WriteLine("primer caso puto");
+            //Console.WriteLine("primer caso");
             Nodo punteroCol = crearCabezaraDominio(dominio);
             Nodo punterofil = crearCabezeraDeLetras(letra);
             Nodo nuevo = new Nodo();
@@ -252,6 +252,18 @@ public class Cubo
             nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
+            // --------------------------Jugabilidad
+            nuevo.movimiento = movimiento;
+            nuevo.alcance = alcance;
+            nuevo.daño = daNo;
+            nuevo.vida = vida;
+            nuevo.valArriba = arriba;
+            nuevo.valAbajo = abajo;
+            nuevo.valIzquierda = izquierda;
+            nuevo.valDerecha = derecha;
+            nuevo.valAdelante = adelante;
+            nuevo.valAtras = atras;
+            // -------------------------------------
             punteroCol.abajo = nuevo;
             nuevo.arriba = punteroCol;
             punterofil.siguiente = nuevo;
@@ -272,6 +284,18 @@ public class Cubo
             nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
+            // --------------------------Jugabilidad
+            nuevo.movimiento = movimiento;
+            nuevo.alcance = alcance;
+            nuevo.daño = daNo;
+            nuevo.vida = vida;
+            nuevo.valArriba = arriba;
+            nuevo.valAbajo = abajo;
+            nuevo.valIzquierda = izquierda;
+            nuevo.valDerecha = derecha;
+            nuevo.valAdelante = adelante;
+            nuevo.valAtras = atras;
+            // -------------------------------------
             punteroCol.abajo = nuevo;
             nuevo.arriba = punteroCol;
             posicion.siguiente = nuevo;
@@ -291,6 +315,18 @@ public class Cubo
             nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
+            // --------------------------Jugabilidad
+            nuevo.movimiento = movimiento;
+            nuevo.alcance = alcance;
+            nuevo.daño = daNo;
+            nuevo.vida = vida;
+            nuevo.valArriba = arriba;
+            nuevo.valAbajo = abajo;
+            nuevo.valIzquierda = izquierda;
+            nuevo.valDerecha = derecha;
+            nuevo.valAdelante = adelante;
+            nuevo.valAtras = atras;
+            // -------------------------------------
             Nodo nodoColocado = recorreLaColumnaDeDominios(punteroCol, nuevo);
             punterofil.siguiente = nodoColocado;
             nodoColocado.anterior = punterofil;
@@ -311,6 +347,18 @@ public class Cubo
             nuevo.fil = fil;
             nuevo.letra = letra;
             nuevo.dom = dominio;
+            // --------------------------Jugabilidad
+            nuevo.movimiento = movimiento;
+            nuevo.alcance = alcance;
+            nuevo.daño = daNo;
+            nuevo.vida = vida;
+            nuevo.valArriba = arriba;
+            nuevo.valAbajo = abajo;
+            nuevo.valIzquierda = izquierda;
+            nuevo.valDerecha = derecha;
+            nuevo.valAdelante = adelante;
+            nuevo.valAtras = atras;
+            // -------------------------------------
             Nodo colFil = colocaDatoEnFilaConPosicionCorrecta(punterofil, dominio, nuevo);
             if (colFil != null)
             {
@@ -948,8 +996,7 @@ public class Cubo
     public string textoParaGraficarMatriz()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
     {
         Nodo auxFil = raiz;
-        String retorno = "digraph G {\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;";
-        retorno += "\nlabel = \"Nivel " + "x" + "\";\n"; 
+        String retorno = "";
         String min = "";
         retorno += "root -> \"" + raiz.abajo.dato + "\n" + raiz.abajo.Jugador + "\n" + raiz.abajo.col + "  " + raiz.abajo.fil + "\";\n";
         retorno += "root -> \"" + raiz.siguiente.dato + "\n" + raiz.siguiente.Jugador + "\n" + raiz.siguiente.col + "  " + raiz.siguiente.fil + "\";\n";
@@ -1063,10 +1110,47 @@ public class Cubo
             auxFil = auxFil.abajo;
         }
         min = "{rank=min;\nroot;\n" + min + "};\n";
-        retorno += min + "}";
+        retorno += min;
+        return retorno;
+    }
+    
+
+    bool banderaSoloPiezas = false;
+    public string retornaSoloPiezas()     // ------------------------------------------------------------------------------------Retornan Solo Piezas tablero
+    {
+        Nodo auxFil = raiz;
+        String retorno = "";
+        while (auxFil != null)
+        {
+            Nodo aux2 = auxFil;
+            while (aux2 != null)
+            {
+                if (aux2 != null)
+                {
+                    string pieza = aux2.dato;
+                    var chars = pieza.ToCharArray();
+                    int esPieza = chars.Length;
+
+                    if (esPieza > 3)
+                    {
+                        if (banderaSoloPiezas)
+                        {
+                            retorno += "," + aux2.dato;
+                        }
+                        else
+                        {
+                            retorno += aux2.dato;
+                            banderaSoloPiezas = true;
+                        }
+                    }
+                }
+                aux2 = aux2.siguiente;
+            }
+            auxFil = auxFil.abajo;
+        }
         return retorno;
     }
 
-    
+
     //Fin Metodos   
 }
