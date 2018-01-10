@@ -37,7 +37,7 @@ public partial class Usuarios : System.Web.UI.Page
         }
                
     }
-
+    public static bool banderaDobleAbrir = false;
     protected void Button1_Click(object sender, EventArgs e)
     {
         string linea = metodos.retornoCadenaModoJuego();
@@ -85,13 +85,16 @@ public partial class Usuarios : System.Web.UI.Page
 
             if (cuantos == 2)
             {
-                if ( usuario2 == metodos.retornoNombreUsuario2() ){ 
+                string Usuario2Espacio = " "+usuario2;
+                if ( usuario2 == metodos.retornoNombreUsuario2() || Usuario2Espacio == metodos.retornoNombreUsuario2() || (banderaDobleAbrir = true))
+                { 
                     Label15.Font.Size = 20;
                     Label15.Font.Bold = true;
                     Label15.Text = "¡ Puede Iniciar El Juego !";
                     Button3.Visible = true;
                 }
                 else {
+                    banderaDobleAbrir = true;
                     Label15.Text = "¡ Su Oponente no esta conectado !";
                 }
             }
@@ -112,16 +115,16 @@ public partial class Usuarios : System.Web.UI.Page
         char[] delimitador = { ',' };
         string[] dat = DropDownList1.SelectedItem.Text.Split(delimitador);
         string enviarCuerpojuego = "";
-        enviarCuerpojuego = dat[0] + ",";
-        enviarCuerpojuego += dat[1] + ",";
-        enviarCuerpojuego += dat[2] + ",";
-        enviarCuerpojuego += dat[3] + ",";
-        enviarCuerpojuego += dat[4] + ",";
-        enviarCuerpojuego += dat[5] + ",";
-        enviarCuerpojuego += dat[6] + ",";
-        enviarCuerpojuego += dat[7] + ",";
-        enviarCuerpojuego += dat[8] + ",";
-        enviarCuerpojuego += dat[9];
+        enviarCuerpojuego = TextBox1.Text + ",";
+        enviarCuerpojuego += TextBox2.Text + ",";
+        enviarCuerpojuego += TextBox3.Text + ",";
+        enviarCuerpojuego += TextBox4.Text + ",";
+        enviarCuerpojuego += TextBox5.Text + ",";
+        enviarCuerpojuego += TextBox6.Text + ",";
+        enviarCuerpojuego += TextBox7.Text + ",";
+        enviarCuerpojuego += TextBox8.Text + ",";
+        enviarCuerpojuego += TextBox9.Text + ",";
+        enviarCuerpojuego += TextBox10.Text;
         metodos.guardaCadenaJuegoCompleto(enviarCuerpojuego);
         metodos.GuardaSiYaInicioJuego();
         Response.Redirect("juegoCliente.aspx");

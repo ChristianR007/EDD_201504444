@@ -61,6 +61,11 @@
         <asp:Button ID="Button4" runat="server" Text="Ir" OnClick="Button4_Click" />
         
         </p>
+        <p>
+        <asp:Label ID="Label6" runat="server" Text="TOPS"></asp:Label>
+        <asp:Button ID="Button7" runat="server" Text="Ir" OnClick="Button4_Click" />
+        
+        </p>
         
     </form>
 </body>

@@ -12,20 +12,34 @@ public partial class juegoCliente : System.Web.UI.Page
     public static string tamX = "";
     public static string tamY = "";
     public static int variante = 0;
+    public static bool banderaPrimerRefresh = false;
+    public static string cuerpo = "";
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        if (banderaPrimerRefresh) {
+            //TextArea1.Value = metodos.retornaCuerpoConsola(cuerpo);
+            Label1.Text = parametros + " |      ";
+        }
+        Image1.ImageUrl = "EDD\\nivel_" + usuario + ".png";
+        Image2.ImageUrl = "EDD\\nivel2.png";
+        Image3.ImageUrl = "EDD\\nivel3.png";
+        Image4.ImageUrl = "EDD\\nivel1.png";
+
     }
+    
+
     public static int uSeg = 0;
     public static int dSeg = 0;
     public static int uMin = 0;
     public static int dMin = 0;
+    public static int refrescarPagina = 0;
     public static string tCronometroLocal = "";
     public static string tCronometroTope = "";
     public static bool banderaCronometro = false;
     protected void Timer1_Tick(object sender, EventArgs e)
     {
+        
         if (banderaCronometro) {
             if (tCronometroLocal == tCronometroTope) // Aca se indicara en consola que se acabo el juego
             {
@@ -72,22 +86,40 @@ public partial class juegoCliente : System.Web.UI.Page
                 }
             }
         }
+
+        if (refrescarPagina == 5)
+        {
+            refrescarPagina = 0;
+            Response.Redirect("juegoCliente.aspx");
+        }
+        else {
+            refrescarPagina++;
+        }
+
+
     }
 
     protected void Button1_Click(object sender, EventArgs e) // Mover
     {
-        
+        //verificar
+        metodos.MovimientoPieza((DropDownList1.SelectedItem.Text).ToString(), TextBox1.Text, TextBox2.Text);
+        cuerpo = usuario +": Movio a "+ (DropDownList1.SelectedItem.Text).ToString() + " para las coordenadas ("+ TextBox1.Text+", " + TextBox2.Text+")";
+        cuerpo += "\nTurno de (" + metodos.retornoNombreUsuario2() +")";
+        TextArea1.Value = metodos.retornaCuerpoConsola(cuerpo);
     }
 
     protected void Button2_Click(object sender, EventArgs e) // Atacar
     {
-        
+        //verificar
+        metodos.AtaquePieza((DropDownList1.SelectedItem.Text).ToString(), TextBox3.Text, TextBox4.Text, TextBox5.Text);
+        cuerpo = usuario + ": Ataco a " + (DropDownList1.SelectedItem.Text).ToString() + " en las coordenadas (" + TextBox3.Text + ", " + TextBox4.Text + ")";
+        cuerpo += " del nivel"+ TextBox5.Text + " \nTurno de (" + metodos.retornoNombreUsuario2() + ")";
+        TextArea1.Value = metodos.retornaCuerpoConsola(cuerpo);
     }
-    
+    public static string parametros = "";
     protected void Button3_Click1(object sender, EventArgs e) // Inicio de Juego
     {
         string cadenaJuegoCC = "";
-        string parametros = "";
         char[] delimitador = { ',' };
         cadenaJuegoCC = metodos.retornoCadenaJuegoCompleto();
         string[] dat = cadenaJuegoCC.Split(delimitador);
@@ -135,8 +167,20 @@ public partial class juegoCliente : System.Web.UI.Page
         // ------------------------------------------------------------------------------------------------------------ Guarda Nombre de Usuarios para consola
         usuario = metodos.retornoNombreUsuario1();
         // ---------------------------------------------------------------------------------------------------------------------------- LLena Listado de Naves
+        string piezasUsuario = metodos.retornoPiezas(usuario);
+        char[] deli = { ',' };
+        string[] piezaU = piezasUsuario.Split(deli);
+        for (int x = 0; x < piezaU.Length; x++)
+        {
+            DropDownList1.Items.Add(new ListItem(piezaU[x], x.ToString(), true));
+        }
+
         //TextBox1.Text = DropDownList1.SelectedItem.Text;
         //DropDownList1.Items.Clear();
+        // ---------------------------------------------------------------------------------------------------------------------------- Reset Cuerpo Consola
+        string reset = metodos.retornaCuerpoConsola("x");
+        banderaPrimerRefresh = true;
+        // -----------------------------------------------------------------------------------------------------------------------------------------------------
         
     }
 }

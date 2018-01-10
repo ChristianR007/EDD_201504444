@@ -60,7 +60,7 @@
         </p>
         <p>
             <H4>Carga de Historial</H4>
-            <asp:Button ID="Button7" runat="server" Text="Cargar" />
+            <asp:Button ID="Button7" runat="server" Text="Cargar" OnClick="Button7_Click" />
         </p>
         
     </form>

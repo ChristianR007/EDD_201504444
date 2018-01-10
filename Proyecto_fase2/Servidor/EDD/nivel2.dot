@@ -1,0 +1,48 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 2 - Barcos";
+root -> "5";
+root -> "G";
+"G";
+"G"->"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";
+"G";
+{rank=same;}
+"5"->"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";
+"5";
+"5";
+"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";
+"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";
+"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10"->"G";
+"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10"->"5";
+{rank=min;
+root;
+"G";};
+"5";"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";{rank=same;"5";"Pieza: Fragata3
+Jugador: Mord86
+(G, 5)
+Vida: 10";}
+}

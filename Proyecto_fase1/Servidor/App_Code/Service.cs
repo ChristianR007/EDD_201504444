@@ -319,17 +319,10 @@ public class Service : System.Web.Services.WebService
     }
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------
     [WebMethod]
-    public string retornoPiezas(string usuario)
+    public string retornoPiezas()
     {
-        string mandar = "";
-        mandar=n1.retornaSoloPiezas()+",";
-        mandar+=n2.retornaSoloPiezas()+",";
-        mandar+=n3.retornaSoloPiezas()+",";
-        mandar+=n4.retornaSoloPiezas();
-        return mandar;
+        return "a";
     }
-    // ------------------------------------------------------------------------------------------------------------------------------------------ Cuerpo Consola
-    public static string cuerpo = "";
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------
     [WebMethod]
     public string CargaMaestra(string rut)

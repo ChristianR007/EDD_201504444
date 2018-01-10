@@ -19,6 +19,7 @@ public class Nodo
     public String destruida = "";
     public String col = "";
     public String fil = "";
+    public int NivelActual = 0; // n1, n2, n3, n4
     // -----------------------------------------------------Habilidades-----------------------------------
     public int movimiento =0;
     public int alcance =0;

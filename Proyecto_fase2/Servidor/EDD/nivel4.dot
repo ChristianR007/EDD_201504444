@@ -1,0 +1,156 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 4 - Satélites";
+root -> "1";
+root -> "A";
+"A"->"B";
+"A"->"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";
+"A";
+"B"->"Z";
+"B"->"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";
+"B";
+"B"->"A";
+"Z";
+"Z"->"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";
+"Z";
+"Z"->"B";
+{rank=same;"A";"B";"B";"Z";}
+"1"->"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";
+"1"->"2";
+"1";
+"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10"->"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";
+"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";
+"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10"->"A";
+"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10"->"1";
+"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";
+"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10"->"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";
+"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10"->"Z";
+"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10"->"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";
+{rank=same;"1";"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";"Pieza: Neosatelite1
+Jugador: Mord86
+(A, 1)
+Vida: 10";"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";}
+"2"->"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";
+"2"->"10";
+"2"->"1";
+"2";
+"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";
+"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";
+"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10"->"Pieza: Neosatelite77
+Jugador: Christian33
+(Z, 1)
+Vida: 10";
+"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10"->"2";
+{rank=same;"2";"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";"Pieza: Neosatelite78
+Jugador: Christian33
+(Z, 2)
+Vida: 10";}
+"10"->"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";
+"10";
+"10"->"2";
+"10";
+"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";
+"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";
+"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10"->"B";
+"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10"->"10";
+{rank=min;
+root;
+"A";};
+"10";"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";{rank=same;"10";"Pieza: Neosatelite2
+Jugador: Mord86
+(B, 10)
+Vida: 10";}
+}

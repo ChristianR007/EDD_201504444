@@ -132,6 +132,30 @@ public class ABB
             return false; // Si es null es porque no hay nada
         }
     }
+    public string verificarABBRetornaCorreo(string nick)
+    {
+        NodoABB aux = RetornarNodoDeABB(raiz, nick);
+        if (aux != null)
+        {
+            return aux.correo; // Es porque si lo encontro
+        }
+        else
+        {
+            return "x"; // Si es null es porque no hay nada
+        }
+    }
+    public string verificarABBRetornaPass(string nick)
+    {
+        NodoABB aux = RetornarNodoDeABB(raiz, nick);
+        if (aux != null)
+        {
+            return aux.pass; // Es porque si lo encontro
+        }
+        else
+        {
+            return "x"; // Si es null es porque no hay nada
+        }
+    }
     public string modificarContactos(string nick, string ContactoActual, string pass, string correo)
     {
         NodoABB nodoUsuario = RetornarNodoDeABB(raiz, nick);

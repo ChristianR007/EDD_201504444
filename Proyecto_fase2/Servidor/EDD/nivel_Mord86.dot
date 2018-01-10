@@ -1,0 +1,15 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 4 - Mord86";
+root -> "1";
+root -> "A";
+"A" -> "B";
+"B" -> "Z";
+"Neosatelite1" -> "A";
+"Neosatelite1" -> "1";
+"1"->"2";
+"2"->"10";
+"Neosatelite2" -> "B";
+"Neosatelite2" -> "10";
+{rank=min;root;"A"; "B";"B"; "Z";};
+}

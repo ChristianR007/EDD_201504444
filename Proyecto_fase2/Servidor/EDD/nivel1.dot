@@ -1,0 +1,159 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 1 - Submarinos";
+root -> "7";
+root -> "A";
+"A"->"T";
+"A"->"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";
+"A";
+"T"->"V";
+"T"->"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";
+"T";
+"T"->"A";
+"V"->"X";
+"V"->"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";
+"V";
+"V"->"T";
+"X";
+"X"->"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";
+"X";
+"X"->"V";
+{rank=same;"A";"T";"T";"V";"V";"X";}
+"7"->"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";
+"7"->"8";
+"7";
+"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";
+"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";
+"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10"->"V";
+"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10"->"7";
+{rank=same;"7";"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";"Pieza: Submarino1
+Jugador: Mord86
+(V, 7)
+Vida: 10";}
+"8"->"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";
+"8"->"9";
+"8"->"7";
+"8";
+"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";
+"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";
+"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10"->"A";
+"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10"->"8";
+{rank=same;"8";"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";"Pieza: Submarino4
+Jugador: Mord86
+(A, 8)
+Vida: 10";}
+"9"->"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";
+"9"->"10";
+"9"->"8";
+"9";
+"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";
+"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";
+"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10"->"X";
+"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10"->"9";
+{rank=same;"9";"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";"Pieza: Submarino2
+Jugador: Mord86
+(X, 9)
+Vida: 10";}
+"10"->"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";
+"10";
+"10"->"9";
+"10";
+"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";
+"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";
+"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10"->"T";
+"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10"->"10";
+{rank=min;
+root;
+"A";};
+"10";"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";{rank=same;"10";"Pieza: Submarino3
+Jugador: Mord86
+(T, 10)
+Vida: 10";}
+}

@@ -1,0 +1,85 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 3 - Aviones";
+root -> "2";
+root -> "C";
+"C"->"D";
+"C"->"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";
+"C";
+"D";
+"D"->"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";
+"D";
+"D"->"C";
+{rank=same;"C";"D";}
+"2"->"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";
+"2"->"12";
+"2";
+"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";
+"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";
+"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10"->"C";
+"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10"->"2";
+{rank=same;"2";"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";"Pieza: Bombardero1
+Jugador: Mord86
+(C, 2)
+Vida: 10";}
+"12"->"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";
+"12";
+"12"->"2";
+"12";
+"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";
+"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";
+"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10"->"D";
+"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10"->"12";
+{rank=min;
+root;
+"C";};
+"12";"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";{rank=same;"12";"Pieza: Bombardero2
+Jugador: Mord86
+(D, 12)
+Vida: 10";}
+}

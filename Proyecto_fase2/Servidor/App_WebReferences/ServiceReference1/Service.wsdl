@@ -92,7 +92,7 @@
       <s:element name="AgregarContacto">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="nick" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nickPadreABB" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="contactoNuevo" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="correo" type="s:string" />
@@ -335,7 +335,11 @@
         </s:complexType>
       </s:element>
       <s:element name="retornoPiezas">
-        <s:complexType />
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usuarioN4" type="s:string" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
       <s:element name="retornoPiezasResponse">
         <s:complexType>
@@ -343,6 +347,61 @@
             <s:element minOccurs="0" maxOccurs="1" name="retornoPiezasResult" type="s:string" />
           </s:sequence>
         </s:complexType>
+      </s:element>
+      <s:element name="retornaCuerpoConsola">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cuerpo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="retornaCuerpoConsolaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="retornaCuerpoConsolaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="generaPruebaArchivoEntrada">
+        <s:complexType />
+      </s:element>
+      <s:element name="generaPruebaArchivoEntradaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="crea1234">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usu4" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="crea1234Response">
+        <s:complexType />
+      </s:element>
+      <s:element name="MovimientoPieza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pieza" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dominio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="num" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MovimientoPiezaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AtaquePieza">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pieza" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Dominio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="num" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nivel" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AtaquePiezaResponse">
+        <s:complexType />
       </s:element>
       <s:element name="CargaMaestra">
         <s:complexType>
@@ -614,6 +673,36 @@
   <wsdl:message name="retornoPiezasSoapOut">
     <wsdl:part name="parameters" element="tns:retornoPiezasResponse" />
   </wsdl:message>
+  <wsdl:message name="retornaCuerpoConsolaSoapIn">
+    <wsdl:part name="parameters" element="tns:retornaCuerpoConsola" />
+  </wsdl:message>
+  <wsdl:message name="retornaCuerpoConsolaSoapOut">
+    <wsdl:part name="parameters" element="tns:retornaCuerpoConsolaResponse" />
+  </wsdl:message>
+  <wsdl:message name="generaPruebaArchivoEntradaSoapIn">
+    <wsdl:part name="parameters" element="tns:generaPruebaArchivoEntrada" />
+  </wsdl:message>
+  <wsdl:message name="generaPruebaArchivoEntradaSoapOut">
+    <wsdl:part name="parameters" element="tns:generaPruebaArchivoEntradaResponse" />
+  </wsdl:message>
+  <wsdl:message name="crea1234SoapIn">
+    <wsdl:part name="parameters" element="tns:crea1234" />
+  </wsdl:message>
+  <wsdl:message name="crea1234SoapOut">
+    <wsdl:part name="parameters" element="tns:crea1234Response" />
+  </wsdl:message>
+  <wsdl:message name="MovimientoPiezaSoapIn">
+    <wsdl:part name="parameters" element="tns:MovimientoPieza" />
+  </wsdl:message>
+  <wsdl:message name="MovimientoPiezaSoapOut">
+    <wsdl:part name="parameters" element="tns:MovimientoPiezaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AtaquePiezaSoapIn">
+    <wsdl:part name="parameters" element="tns:AtaquePieza" />
+  </wsdl:message>
+  <wsdl:message name="AtaquePiezaSoapOut">
+    <wsdl:part name="parameters" element="tns:AtaquePiezaResponse" />
+  </wsdl:message>
   <wsdl:message name="CargaMaestraSoapIn">
     <wsdl:part name="parameters" element="tns:CargaMaestra" />
   </wsdl:message>
@@ -782,6 +871,26 @@
     <wsdl:operation name="retornoPiezas">
       <wsdl:input message="tns:retornoPiezasSoapIn" />
       <wsdl:output message="tns:retornoPiezasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="retornaCuerpoConsola">
+      <wsdl:input message="tns:retornaCuerpoConsolaSoapIn" />
+      <wsdl:output message="tns:retornaCuerpoConsolaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="generaPruebaArchivoEntrada">
+      <wsdl:input message="tns:generaPruebaArchivoEntradaSoapIn" />
+      <wsdl:output message="tns:generaPruebaArchivoEntradaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="crea1234">
+      <wsdl:input message="tns:crea1234SoapIn" />
+      <wsdl:output message="tns:crea1234SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MovimientoPieza">
+      <wsdl:input message="tns:MovimientoPiezaSoapIn" />
+      <wsdl:output message="tns:MovimientoPiezaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AtaquePieza">
+      <wsdl:input message="tns:AtaquePiezaSoapIn" />
+      <wsdl:output message="tns:AtaquePiezaSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="CargaMaestra">
       <wsdl:input message="tns:CargaMaestraSoapIn" />
@@ -1100,6 +1209,51 @@
     </wsdl:operation>
     <wsdl:operation name="retornoPiezas">
       <soap:operation soapAction="http://localhost/hola/retornoPiezas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retornaCuerpoConsola">
+      <soap:operation soapAction="http://localhost/hola/retornaCuerpoConsola" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generaPruebaArchivoEntrada">
+      <soap:operation soapAction="http://localhost/hola/generaPruebaArchivoEntrada" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="crea1234">
+      <soap:operation soapAction="http://localhost/hola/crea1234" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovimientoPieza">
+      <soap:operation soapAction="http://localhost/hola/MovimientoPieza" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AtaquePieza">
+      <soap:operation soapAction="http://localhost/hola/AtaquePieza" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1454,6 +1608,51 @@
     </wsdl:operation>
     <wsdl:operation name="retornoPiezas">
       <soap12:operation soapAction="http://localhost/hola/retornoPiezas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retornaCuerpoConsola">
+      <soap12:operation soapAction="http://localhost/hola/retornaCuerpoConsola" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generaPruebaArchivoEntrada">
+      <soap12:operation soapAction="http://localhost/hola/generaPruebaArchivoEntrada" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="crea1234">
+      <soap12:operation soapAction="http://localhost/hola/crea1234" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovimientoPieza">
+      <soap12:operation soapAction="http://localhost/hola/MovimientoPieza" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AtaquePieza">
+      <soap12:operation soapAction="http://localhost/hola/AtaquePieza" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

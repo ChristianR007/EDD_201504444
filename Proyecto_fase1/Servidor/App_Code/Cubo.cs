@@ -1113,7 +1113,125 @@ public class Cubo
         retorno += min;
         return retorno;
     }
-    
+
+    public string retornaPiezas()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
+    {
+        Nodo auxFil = raiz;
+        String retorno = "";
+        String min = "";
+        while (auxFil != null)
+        {
+            Nodo aux2 = auxFil;
+            while (aux2 != null)
+            {
+                if (aux2.adelante != null)
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.adelante.dato))
+                    {   //"Pieza: " + raiz.abajo.dato + "\nJugador: " + raiz.abajo.Jugador + "\nCoordenadas: (" + raiz.abajo.columna + ", " + raiz.abajo.fila + ")
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + textoParaMatrizLetra3D(aux2) + "\";\n";
+                    }
+
+                }
+                if (aux2.abajo != null)
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.abajo.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.abajo.dato + "\n" + aux2.abajo.Jugador + "\n" + aux2.abajo.col + "  " + aux2.abajo.fil + "\";\n";
+                    }
+
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                    }
+
+                }
+                if (aux2.arriba != null)
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.arriba.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.arriba.dato + "\n" + aux2.arriba.Jugador + "\n" + aux2.arriba.col + "  " + aux2.arriba.fil + "\";\n";
+                    }
+
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                    }
+
+                }
+                if (aux2.siguiente != null)
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";\n";
+                        if (x == 0)
+                        {
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        }
+                        else
+                        {
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"; \"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";}\n";
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        if (x == 0)
+                        {
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        }
+                        else
+                        {
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                        }
+                    }
+
+                }
+                if (aux2.anterior != null)
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.anterior.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.anterior.dato + "\n" + aux2.anterior.Jugador + "\n" + aux2.anterior.col + "  " + aux2.anterior.fil + "\";\n";
+                        if (x == 0)
+                        {
+                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        }
+                        else
+                        {
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                        }
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(aux2.dato))
+                    {
+                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        if (!string.IsNullOrEmpty(aux2.dato))
+                        {
+                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                        }
+                    }
+
+                }
+                aux2 = aux2.siguiente;
+            }
+            x++;
+            auxFil = auxFil.abajo;
+        }
+        min = "{rank=min;\nroot;\n" + min + "};\n";
+        retorno += min;
+        return retorno;
+    }
 
     bool banderaSoloPiezas = false;
     public string retornaSoloPiezas()     // ------------------------------------------------------------------------------------Retornan Solo Piezas tablero

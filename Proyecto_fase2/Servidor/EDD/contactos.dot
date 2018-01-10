@@ -1,5 +1,5 @@
 digraph G {
-label = "Arbol de Usuarios y Juegos";
+label = "Arbol de Usuarios y Contactos";
 "Nickname: Mord86
 Contraseña: NPZ44VGE5FD
 Correo: scelerisque.sed@lectusa.com
@@ -218,6 +218,61 @@ Gano: 0"[style=filled; color= white;];
 }"Nickname: Mord86
 Contraseña: NPZ44VGE5FD
 Correo: scelerisque.sed@lectusa.com
+Conectado: 1"->"Nickname: Imre78
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net";
+"Nickname: Imre78
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net"->"Nickname: Asro25
+Contraseña: PDW92QLF0HC
+Correo: turpis.Aliquam.adipiscing@tincidunt.net";
+"Nickname: Imre78
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net"->"Nickname: otro
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com";
+"Nickname: Asro25
+Contraseña: PDW92QLF0HC
+Correo: turpis.Aliquam.adipiscing@tincidunt.net";
+"Nickname: otro
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com";
+"Nickname: otro
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com"->"Nickname: Nuevo
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net";
+"Nickname: otro
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com"->"Nickname: Stin94
+Contraseña: WAG95DOM2LZ
+Correo: in.tempus@a.com";
+"Nickname: Nuevo
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net";
+"Nickname: Stin94
+Contraseña: WAG95DOM2LZ
+Correo: in.tempus@a.com";
+
+subgraph cluster_1000  {style=filled;color=Green;
+"Nickname: Imre78
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net"[style=filled; color= white;];
+"Nickname: Asro25
+Contraseña: PDW92QLF0HC
+Correo: turpis.Aliquam.adipiscing@tincidunt.net"[style=filled; color= white;];
+"Nickname: otro
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com"[style=filled; color= white;];
+"Nickname: Nuevo
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net"[style=filled; color= white;];
+"Nickname: Stin94
+Contraseña: WAG95DOM2LZ
+Correo: in.tempus@a.com"[style=filled; color= white;];
+}"Nickname: Mord86
+Contraseña: NPZ44VGE5FD
+Correo: scelerisque.sed@lectusa.com
 Conectado: 1" -> "Nickname: Asro25
 Contraseña: PDW92QLF0HC
 Correo: turpis.Aliquam.adipiscing@tincidunt.net
@@ -260,6 +315,28 @@ Contraseña: MDQ80CXX3XT
 Correo: eget.dictum.placerat@atsem.net
 Conectado: 0"[style=filled; color= lightgray;];
 "Nickname: Imre78
+Contraseña: MDQ80CXX3XT
+Correo: eget.dictum.placerat@atsem.net
+Conectado: 0"->"Nickname: Taon95
+Contraseña: USW07EIK1AC
+Correo: parturient@Nulla.co.uk";
+"Nickname: Taon95
+Contraseña: USW07EIK1AC
+Correo: parturient@Nulla.co.uk"->"Nickname: Avey48
+Contraseña: ZEE21HJG3WL
+Correo: Class@orci.net";
+"Nickname: Avey48
+Contraseña: ZEE21HJG3WL
+Correo: Class@orci.net";
+
+subgraph cluster_1001  {style=filled;color=Green;
+"Nickname: Taon95
+Contraseña: USW07EIK1AC
+Correo: parturient@Nulla.co.uk"[style=filled; color= white;];
+"Nickname: Avey48
+Contraseña: ZEE21HJG3WL
+Correo: Class@orci.net"[style=filled; color= white;];
+}"Nickname: Imre78
 Contraseña: MDQ80CXX3XT
 Correo: eget.dictum.placerat@atsem.net
 Conectado: 0" -> "Nickname: Avey48

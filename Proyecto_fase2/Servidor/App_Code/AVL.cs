@@ -10,11 +10,13 @@ public class AVL
 {
     class nodoAVL
     {
-        public string nickname;
+        public string nickname;     // Atributos
         public string password;
-        public string correo;
-        public nodoAVL izquierda;
-        public nodoAVL derecha;
+        public string correo;       
+        public nodoAVL izquierda; // Apuntador izquierda AVL
+        public nodoAVL derecha; // Apuntador derecha AVL
+
+        public ABB sigABB;  // Apuntador hacia ABB de usuarios
         public nodoAVL(string nick, string pass, string correo)
         {
             this.nickname = nick;
@@ -83,6 +85,8 @@ public class AVL
     public void InsertarAVL(AVL root, string nick, string pass, string correo)
     {
         nodoAVL nuevo = new nodoAVL(nick, pass, correo);
+        ABB nuevoABB = new ABB();
+        nuevo.sigABB = nuevoABB;
         if (root.raiz == null)
         {
             root.raiz = nuevo;

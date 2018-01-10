@@ -28,6 +28,8 @@ public partial class cargaDeDatos : System.Web.UI.Page
         // tablero
         ServiceReference1.ProyectoEDDSoapClient metodos = new ServiceReference1.ProyectoEDDSoapClient();
         string carga = metodos.CargaMaestra("tablero");
+        metodos.generaPruebaArchivoEntrada();
+
     }
 
     protected void Button3_Click(object sender, EventArgs e)
@@ -54,5 +56,12 @@ public partial class cargaDeDatos : System.Web.UI.Page
         // contactos
         ServiceReference1.ProyectoEDDSoapClient metodos = new ServiceReference1.ProyectoEDDSoapClient();
         string carga = metodos.CargaMaestra("contactos");
+    }
+
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+        // historial [Arbol B]
+        ServiceReference1.ProyectoEDDSoapClient metodos = new ServiceReference1.ProyectoEDDSoapClient();
+        string carga = metodos.CargaMaestra("historial");
     }
 }

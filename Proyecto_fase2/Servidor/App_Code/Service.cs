@@ -34,7 +34,7 @@ public class Service : System.Web.Services.WebService
     static ABB nuevoABB = new ABB();
     static ABBespejo nuevoAE = new ABBespejo();
     static Cubo nuevoC = new Cubo();
-
+    static BTree nuevoAB = new BTree();
 
     //------------------------------------------------------- ABC usuarios ---------------------------------------------
     //Agregar
@@ -123,15 +123,32 @@ public class Service : System.Web.Services.WebService
     //------------------------------------------------------- ABC Contactos ---------------------------------------------
     //Agregar
     [WebMethod]
-    public void AgregarContacto(string nick, string contactoNuevo, string pass, string correo)
+    public void AgregarContacto(string nickPadreABB, string contactoNuevo, string pass, string correo)
     {
-        if (nuevoABB.verificarABB(nick) == true) // Si ya existe el nick del abb solo inserta nuevo en AVL
+        if (nuevoABB.verificarABB(contactoNuevo) == true) // Si ya existe el nick del abb solo inserta nuevo en AVL
         {
-            nuevoABB.InsertarContactos(nick, contactoNuevo, pass, correo);
+            if (nuevoABB.verificarABBRetornaPass(contactoNuevo) == "x")
+            {
+                if (nuevoABB.verificarABBRetornaCorreo(contactoNuevo) == "x")
+                {
+                    nuevoABB.InsertarContactos(nickPadreABB, contactoNuevo, pass, correo);
+                }
+                else {
+                    nuevoABB.InsertarContactos(nickPadreABB, contactoNuevo, pass, nuevoABB.verificarABBRetornaCorreo(contactoNuevo));
+                }
+                
+            }
+            else if (nuevoABB.verificarABBRetornaCorreo(contactoNuevo) == "x")
+            {
+                nuevoABB.InsertarContactos(nickPadreABB, contactoNuevo, nuevoABB.verificarABBRetornaPass(contactoNuevo), correo);
+            }
+            else {
+                nuevoABB.InsertarContactos(nickPadreABB, contactoNuevo, nuevoABB.verificarABBRetornaPass(contactoNuevo), nuevoABB.verificarABBRetornaCorreo(contactoNuevo));
+            }
+            
         }
         else {                                  // Si no
-            nuevoABB.Insertar(nick, pass, correo, "0"); // Crear nodo ABB
-            nuevoABB.InsertarContactos(nick, contactoNuevo, pass, correo); // Luego inserta AVL
+            nuevoABB.InsertarContactos(nickPadreABB, contactoNuevo, pass, correo);
         }
 
         string cadena;
@@ -319,10 +336,168 @@ public class Service : System.Web.Services.WebService
     }
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------
     [WebMethod]
-    public string retornoPiezas()
+    public string retornoPiezas(string usuarioN4)
     {
-        return "a";
+        string mandar = "";
+        mandar=n1.retornaSoloPiezas()+",";
+        mandar+=n2.retornaSoloPiezas()+",";
+        mandar+=n3.retornaSoloPiezas()+",";
+        mandar+=n4.retornaSoloPiezas4(usuarioN4);
+        return mandar;
     }
+    // ------------------------------------------------------------------------------------------------------------------------------------------ Cuerpo Consola
+    public static string cuerpoConsola = "";
+    [WebMethod]
+    public string retornaCuerpoConsola(string cuerpo)
+    {
+        if (cuerpo == "x") {
+            cuerpoConsola = "";
+        }
+        return cuerpoConsola + cuerpo;
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public static string prueba = "";
+    [WebMethod]
+    public void generaPruebaArchivoEntrada()
+    {
+        string cadena = "";
+        char[] delimitador = { ',' };
+        string[] dat = prueba.Split(delimitador);
+
+        for (int x = 0; x < dat.Length-1; x++)
+        {
+            cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 4 - "+ dat[x].ToString() + "\";\n" + n4.textoParaGraficarMatriz4(dat[x].ToString()) + "}";
+            crearDot(cadena, ("nivel_" + dat[x].ToString()));
+            crearPng(("nivel_" + dat[x].ToString()));
+        }
+        
+    }
+    [WebMethod]
+    public void crea1234(string usu4) // metodo de prueba
+    {
+        string cadena = "";
+        cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 0\";\n" + nuevoC.textoParaGraficarMatriz() + "}";
+        crearDot(cadena, "tablero");
+        crearPng("tablero");
+        cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 1 - Submarinos\";\n" + n1.textoParaGraficarMatriz() + "}";
+        crearDot(cadena, "nivel1");
+        crearPng("nivel1");
+        cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 2 - Barcos\";\n" + n2.textoParaGraficarMatriz() + "}";
+        crearDot(cadena, "nivel2");
+        crearPng("nivel2");
+        cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 3 - Aviones\";\n" + n3.textoParaGraficarMatriz() + "}";
+        crearDot(cadena, "nivel3");
+        crearPng("nivel3");
+        cadena = "digraph G{\nnode[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;\nlabel = \"Nivel 4 - "+usu4+"\";\n" + n4.textoParaGraficarMatriz4(usu4) + "}";
+        crearDot(cadena, ("nivel_" + usu4));
+        crearPng(("nivel_"+usu4));
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------MOVIMIENTOS
+    [WebMethod]
+    public void MovimientoPieza(string pieza, string Dominio, string num)
+    {
+        int n = aNivel(pieza);
+        if (n == 1)
+        {
+            Nodo tmp = n1.retornaDominio(pieza);
+            if (tmp!=null) {
+                n1.eliminarDeMatriz(tmp.dom, tmp.letra, tmp.dato);
+                n1.ingresarAMatriz(Dominio, num, tmp.Jugador, tmp.dato, tmp.destruida, tmp.col, tmp.fil, "1", tmp.movimiento, tmp.alcance, tmp.daño, tmp.vida, tmp.valArriba, tmp.valAbajo, tmp.valIzquierda, tmp.valDerecha, tmp.valAdelante, tmp.valAtras);
+            }
+        }
+        else if ((n == 21) || (n == 22))
+        {
+            Nodo tmp = n2.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                n2.eliminarDeMatriz(tmp.dom, tmp.letra, tmp.dato);
+                n2.ingresarAMatriz(Dominio, num, tmp.Jugador, tmp.dato, tmp.destruida, tmp.col, tmp.fil, "1", tmp.movimiento, tmp.alcance, tmp.daño, tmp.vida, tmp.valArriba, tmp.valAbajo, tmp.valIzquierda, tmp.valDerecha, tmp.valAdelante, tmp.valAtras);
+            }
+        }
+        else if ((n == 31) || (n == 32) || (n == 33))
+        {
+            Nodo tmp = n3.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                n3.eliminarDeMatriz(tmp.dom, tmp.letra, tmp.dato);
+                n3.ingresarAMatriz(Dominio, num, tmp.Jugador, tmp.dato, tmp.destruida, tmp.col, tmp.fil, "1", tmp.movimiento, tmp.alcance, tmp.daño, tmp.vida, tmp.valArriba, tmp.valAbajo, tmp.valIzquierda, tmp.valDerecha, tmp.valAdelante, tmp.valAtras);
+            }
+        }
+        else if (n == 4)
+        {
+            Nodo tmp = n4.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                n4.eliminarDeMatriz(tmp.dom, tmp.letra, tmp.dato);
+                n4.ingresarAMatriz(Dominio, num, tmp.Jugador, tmp.dato, tmp.destruida, tmp.col, tmp.fil, "1", tmp.movimiento, tmp.alcance, tmp.daño, tmp.vida, tmp.valArriba, tmp.valAbajo, tmp.valIzquierda, tmp.valDerecha, tmp.valAdelante, tmp.valAtras);
+            }
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------------ATAQUE
+    [WebMethod]
+    public void AtaquePieza(string pieza, string Dominio, string num, string nivel)
+    {
+        if (nivel == 1.ToString())
+        {
+            Nodo tmp = n1.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                if (tmp.vida == 1) {
+                    n1.modificaPieza(pieza, "0", (tmp.vida-1));
+                }
+                else {
+                    n1.modificaPieza(pieza, "1", (tmp.vida - 1));
+                }
+            }
+        }
+        else if ((nivel == 21.ToString()) || (nivel == 22.ToString()))
+        {
+            Nodo tmp = n2.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                if (tmp.vida == 1)
+                {
+                    n2.modificaPieza(pieza, "0", (tmp.vida - 1));
+                }
+                else
+                {
+                    n2.modificaPieza(pieza, "1", (tmp.vida - 1));
+                }
+            }
+        }
+        else if ((nivel == 31.ToString()) || (nivel == 32.ToString()) || (nivel == 33.ToString()))
+        {
+            Nodo tmp = n3.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                if (tmp.vida == 1)
+                {
+                    n3.modificaPieza(pieza, "0", (tmp.vida - 1));
+                }
+                else
+                {
+                    n3.modificaPieza(pieza, "1", (tmp.vida - 1));
+                }
+            }
+        }
+        else if (nivel == 4.ToString())
+        {
+            Nodo tmp = n4.retornaDominio(pieza);
+            if (tmp != null)
+            {
+                if (tmp.vida == 1)
+                {
+                    n4.modificaPieza(pieza, "0", (tmp.vida - 1));
+                }
+                else
+                {
+                    n4.modificaPieza(pieza, "1", (tmp.vida - 1));
+                }
+            }
+        }
+    }
+    // -------------------------------------------------------------------------------------------------------------------------------------------------- Verificar
+
     // --------------------------------------------------------------------------------------------------------------------------------------------------------------
     [WebMethod]
     public string CargaMaestra(string rut)
@@ -410,6 +585,7 @@ public class Service : System.Web.Services.WebService
                             // Envia a Cubo en coordenadas segund nivel de retorno de funcion
                             nuevoC.ingresarAMatriz(dato[1].ToString(), dato[2].ToString(), dato[0].ToString(), dato[3].ToString(), dato[4].ToString(), dato[1].ToString(), dato[2].ToString(), queNiveles.ToString(),6,0,2,10,false,true,false,false,false,false);
                             n4.ingresarAMatriz(dato[1].ToString(), dato[2].ToString(), dato[0].ToString(), dato[3].ToString(), dato[4].ToString(), dato[1].ToString(), dato[2].ToString(), queNiveles.ToString(), 6, 0, 2, 10, false, true, false, false, false, false);
+                            prueba += dato[0].ToString()+",";
                         }
                         else {
                             // Envia a Cubo en coordenadas segund nivel de retorno de funcion
@@ -437,19 +613,14 @@ public class Service : System.Web.Services.WebService
                     }
                     else if (rut == "contactos") {
                         // [0]Usuario padre, [1]Nickname, [2]ContraseNa, [3]correo electronico
+                        AgregarContacto(dato[0].ToString(), dato[1].ToString(), dato[2].ToString(), dato[3].ToString());
                         
-                        if (nuevoABB.verificarABB(dato[0].ToString()) == true) // Si ya existe el nick del abb solo inserta nuevo en AVL
-                        {
-                            nuevoABB.InsertarContactos(dato[0].ToString(), dato[1].ToString(), dato[2].ToString(), dato[3].ToString());
-                        }
-                        else
-                        {                                  // Si no
-                            nuevoABB.Insertar(dato[0].ToString(), dato[2].ToString(), dato[3].ToString(), "1"); // Crear nodo ABB
-                            nuevoABB.InsertarContactos(dato[0].ToString(), dato[1].ToString(), dato[2].ToString(), dato[3].ToString()); // Luego inserta AVL
-                        }
                     }
                     else if (rut == "historial") {
-
+                        //[0]Coordenada X [1]Coordenada Y [2]Unidad Atacante [3]Resultado (golpe = 0 eliminacion de objetivo = 1) [4]Unidad 
+                        //Int32.Parse
+                        NodoB nuevoNodoB = new NodoB(dato[0].ToString(), Int32.Parse(dato[1]), dato[2].ToString(), Int32.Parse(dato[3]), dato[4].ToString(), "", "", "8/01/2017", "02:00", 1);
+                        nuevoAB.insertarNuevoHorario(nuevoNodoB);
                     }
                     
                 }
@@ -509,7 +680,9 @@ public class Service : System.Web.Services.WebService
             crearPng(rut);
         }
         else if (rut == "historial") {
-            //
+            cadena = "digraph G {\nlabel = \"Historial\";\n" + nuevoAB.graficarArbol() + "\n}";
+            crearDot(cadena, rut);
+            crearPng(rut);
         }
         
         return cuerpo;

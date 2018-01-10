@@ -172,12 +172,27 @@ public class Cubo
         }
         else
         {
-            while (auxiliar.siguiente != null)
+            while (auxiliar != null)
             {
+                if (nuevo.dato.CompareTo(auxiliar.dato) < 0)
+                {
+                    Nodo tmp = auxiliar.anterior;
+                    tmp.siguiente = nuevo;
+                    nuevo.anterior = tmp;
+                    nuevo.siguiente = auxiliar;
+                    auxiliar.anterior = nuevo;
+                    break;
+                }
+                if (auxiliar.siguiente == null)
+                {
+                    auxiliar.siguiente = nuevo;
+                    nuevo.anterior = auxiliar;
+                    break;
+                }
                 auxiliar = auxiliar.siguiente;
             }
-            auxiliar.siguiente = nuevo;
-            nuevo.anterior = auxiliar;
+            //auxiliar.siguiente = nuevo;
+            //nuevo.anterior = auxiliar;
             return nuevo;
         }
     }
@@ -218,7 +233,10 @@ public class Cubo
                 {
                     auxiliar = auxiliar.abajo;
                 }
-                else { break; }
+                else
+                {
+                    break;
+                }
             }
             if (bandera == 1)
             {
@@ -275,7 +293,6 @@ public class Cubo
             // Segundo Caso
             Nodo punteroCol = crearCabezaraDominio(dominio);
             Nodo punterofil = encuentraFila(letra);
-            Nodo posicion = recorreLaFilaDeLetra(punterofil);
             Nodo nuevo = new Nodo();
             nuevo.Jugador = jugador;
             nuevo.dato = unidad;
@@ -298,8 +315,9 @@ public class Cubo
             // -------------------------------------
             punteroCol.abajo = nuevo;
             nuevo.arriba = punteroCol;
-            posicion.siguiente = nuevo;
-            nuevo.anterior = posicion;
+            Nodo posicion = recorreLaFilaDeLetra(punterofil, nuevo);
+            //posicion.siguiente = nuevo;
+            //nuevo.anterior = posicion;
             return null;
         }
         if ((existeColumna(dominio) == true) && (existeFila(letra) == false))
@@ -389,7 +407,7 @@ public class Cubo
         {
             if ((fil == 1) && (col == 1))
             {
-                if (punteroEliminar.adelante != null)
+                if (!true)
                 {
                     punteroEliminar.anterior.siguiente = punteroEliminar.adelante;
                     punteroEliminar.arriba.abajo = punteroEliminar.adelante;
@@ -583,15 +601,53 @@ public class Cubo
 
     // Este metodo se encarga de recorrer las filas de las letras para
     // encontrar su interseccion con la columna
-    public Nodo recorreLaFilaDeLetra(Nodo nodoB)
+    public Nodo recorreLaFilaDeLetra(Nodo nodoB, Nodo nuevo)
     {
         Nodo retorno = null;
-        while (nodoB.siguiente != null)
+
+        if (nodoB.siguiente.siguiente == null)
         {
-            nodoB = nodoB.siguiente;
+            Nodo sigRaiz = nodoB.siguiente;
+            if ((nuevo.dom).CompareTo((sigRaiz.dom)) < 0)
+            {
+                sigRaiz.anterior = nuevo;
+                nuevo.siguiente = sigRaiz;
+                nuevo.anterior = nodoB;
+                nodoB.siguiente = nuevo;
+            }
+            else
+            {
+                sigRaiz.siguiente = nuevo;
+                nuevo.anterior = sigRaiz;
+            }
+            retorno = nodoB;
         }
-        retorno = nodoB;
-        return retorno;
+        else
+        {
+            Nodo tmp = nodoB.siguiente;
+            while (tmp != null)
+            {
+                if ((nuevo.dom).CompareTo((tmp.dom)) < 0)
+                {
+                    Nodo Ante = tmp.anterior;
+                    Ante.siguiente = nuevo;
+                    nuevo.anterior = Ante;
+                    nuevo.siguiente = tmp;
+                    tmp.anterior = nuevo;
+                    break;
+                }
+                if (tmp.siguiente == null)
+                {
+                    tmp.siguiente = nuevo;
+                    nuevo.anterior = tmp;
+                    break;
+                }
+                tmp = tmp.siguiente;
+            }
+            retorno = nodoB;
+
+        }
+        return nodoB;
     }
 
     // Este metodo se encarga de recorrer las columnas del dominio
@@ -993,242 +1049,391 @@ public class Cubo
         return retorno;
     }
     int x = 0;
-    public string textoParaGraficarMatriz()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
+    public string textoParaGraficarMatriz()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"   ///////////             unidad, Jugador, col, fil, vida
     {
         Nodo auxFil = raiz;
         String retorno = "";
         String min = "";
-        retorno += "root -> \"" + raiz.abajo.dato + "\n" + raiz.abajo.Jugador + "\n" + raiz.abajo.col + "  " + raiz.abajo.fil + "\";\n";
-        retorno += "root -> \"" + raiz.siguiente.dato + "\n" + raiz.siguiente.Jugador + "\n" + raiz.siguiente.col + "  " + raiz.siguiente.fil + "\";\n";
+        String minFijo = "";
+        String ultimo = "";
+        String Same = "";
+        string ex = "";
+        if (raiz.abajo != null)
+        {
+            ultimo = "root -> \"" + raiz.abajo.dato + "\";\n";
+        }
+        if (raiz.siguiente != null)
+        {
+            ultimo += "root -> \"" + raiz.siguiente.dato + "\";\n";
+            minFijo = "\"" + raiz.siguiente.dato + "\";";
+        }
+
         while (auxFil != null)
         {
             Nodo aux2 = auxFil;
+            if (x >= 1)
+            {
+                retorno += "{rank=same;" + Same + "}\n";
+                Same = "";
+            }
             while (aux2 != null)
             {
-                if (aux2.adelante != null)
+                if (!string.IsNullOrEmpty(aux2.Jugador))
                 {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.adelante.dato))
-                    {   //"Pieza: " + raiz.abajo.dato + "\nJugador: " + raiz.abajo.Jugador + "\nCoordenadas: (" + raiz.abajo.columna + ", " + raiz.abajo.fila + ")
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + textoParaMatrizLetra3D(aux2) + "\";\n";
-                    }
-
-                }
-                if (aux2.abajo != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.abajo.dato))
+                    if (aux2.siguiente != null) // Siguiente
                     {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.abajo.dato + "\n" + aux2.abajo.Jugador + "\n" + aux2.abajo.col + "  " + aux2.abajo.fil + "\";\n";
-                    }
-
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                    }
-
-                }
-                if (aux2.arriba != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.arriba.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.arriba.dato + "\n" + aux2.arriba.Jugador + "\n" + aux2.arriba.col + "  " + aux2.arriba.fil + "\";\n";
-                    }
-
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                    }
-
-                }
-                if (aux2.siguiente != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";\n";
-                        if (x == 0)
+                        if (!string.IsNullOrEmpty(aux2.siguiente.Jugador))
                         {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                            retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"Pieza: " + aux2.siguiente.dato + "\nJugador: " + aux2.siguiente.Jugador + "\n(" + aux2.siguiente.col + ", " + aux2.siguiente.fil + ")\nVida: " + aux2.siguiente.vida + "\";\n";
+                            Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            Same += "\"Pieza: " + aux2.siguiente.dato + "\nJugador: " + aux2.siguiente.Jugador + "\n(" + aux2.siguiente.col + ", " + aux2.siguiente.fil + ")\nVida: " + aux2.siguiente.vida + "\";";
                         }
                         else
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"; \"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";}\n";
+                            if (!string.IsNullOrEmpty(aux2.siguiente.dato))
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"" + aux2.siguiente.dato + "\";\n";
+                                Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                                Same += "\"" + aux2.siguiente.dato + "\";";
+                            }
+                            else
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";\n";
+                                Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+
                         }
                     }
+                    else
+                    {
+                        retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";\n";
+                        Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                    }
 
+                    if (aux2.abajo != null) // Abajo
+                    {
+                        if (!string.IsNullOrEmpty(aux2.abajo.Jugador))
+                        {
+                            retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"Pieza: " + aux2.abajo.dato + "\nJugador: " + aux2.abajo.Jugador + "\n(" + aux2.abajo.col + ", " + aux2.abajo.fil + ")\nVida: " + aux2.abajo.vida + "\";\n";
+                            //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(aux2.abajo.dato))
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"" + aux2.abajo.dato + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+                            else
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\n" + aux2.vida + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";\n";
+                        //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"";
+                    }
+
+                    if (aux2.arriba != null) // Arriba
+                    {
+                        if (!string.IsNullOrEmpty(aux2.arriba.Jugador))
+                        {
+                            retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"Pieza: " + aux2.arriba.dato + "\nJugador: " + aux2.arriba.Jugador + "\n(" + aux2.arriba.col + ", " + aux2.arriba.fil + ")\nVida: " + aux2.arriba.vida + "\";\n";
+                            //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(aux2.arriba.dato))
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"" + aux2.arriba.dato + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+                            else
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\n" + aux2.vida + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";\n";
+                        //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                    }
+
+                    if (aux2.anterior != null) // Arriba
+                    {
+                        if (!string.IsNullOrEmpty(aux2.anterior.Jugador))
+                        {
+                            retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"Pieza: " + aux2.anterior.dato + "\nJugador: " + aux2.anterior.Jugador + "\n(" + aux2.anterior.col + ", " + aux2.anterior.fil + ")\nVida: " + aux2.anterior.vida + "\";\n";
+                            //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(aux2.anterior.dato))
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\"->\"" + aux2.anterior.dato + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+
+                            }
+                            else
+                            {
+                                retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";\n";
+                                //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        retorno += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                        //Same += "\"Pieza: " + aux2.dato + "\nJugador: " + aux2.Jugador + "\n(" + aux2.col + ", " + aux2.fil + ")\nVida: " + aux2.vida + "\";";
+                    }
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(aux2.dato))
                     {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        if (x == 0)
+
+                        if (aux2.siguiente != null)
                         {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                            if (!string.IsNullOrEmpty(aux2.siguiente.dato))
+                            {
+                                if (!string.IsNullOrEmpty(aux2.siguiente.Jugador))
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"Pieza: " + aux2.siguiente.dato + "\nJugador: " + aux2.siguiente.Jugador + "\n(" + aux2.siguiente.col + ", " + aux2.siguiente.fil + ")\nVida: " + aux2.siguiente.vida + "\";\n";
+                                    Same += "\"" + aux2.dato + "\";";
+                                    Same += "\"Pieza: " + aux2.siguiente.dato + "\nJugador: " + aux2.siguiente.Jugador + "\n(" + aux2.siguiente.col + ", " + aux2.siguiente.fil + ")\nVida: " + aux2.siguiente.vida + "\";";
+                                    if (aux2.abajo == null)
+                                    {
+                                        ex = "{rank=same;";
+                                        ex += "\"" + aux2.dato + "\";";
+                                        ex += "\"Pieza: " + aux2.siguiente.dato + "\nJugador: " + aux2.siguiente.Jugador + "\n(" + aux2.siguiente.col + ", " + aux2.siguiente.fil + ")\nVida: " + aux2.siguiente.vida + "\";";
+                                        ex += "}\n";
+                                    }
+
+                                }
+                                else
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.siguiente.dato + "\";\n";
+                                    Same += "\"" + aux2.dato + "\";";
+                                    Same += "\"" + aux2.siguiente.dato + "\";";
+                                }
+                            }
                         }
                         else
                         {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                            retorno += "\"" + aux2.dato + "\";\n";
+                        }
+
+                        if (aux2.abajo != null)
+                        {
+                            if (!string.IsNullOrEmpty(aux2.abajo.dato))
+                            {
+                                if (!string.IsNullOrEmpty(aux2.abajo.Jugador))
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"Pieza: " + aux2.abajo.dato + "\nJugador: " + aux2.abajo.Jugador + "\n(" + aux2.abajo.col + ", " + aux2.abajo.fil + ")\nVida: " + aux2.abajo.vida + "\";\n";
+                                }
+                                else
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.abajo.dato + "\";\n";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            retorno += "\"" + aux2.dato + "\";\n";
+                        }
+                        if (aux2.arriba != null)
+                        {
+                            if (!string.IsNullOrEmpty(aux2.arriba.dato))
+                            {
+                                if (!string.IsNullOrEmpty(aux2.arriba.Jugador))
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"Pieza: " + aux2.arriba.dato + "\nJugador: " + aux2.arriba.Jugador + "\n(" + aux2.arriba.col + ", " + aux2.arriba.fil + ")\nVida: " + aux2.arriba.vida + "\";\n";
+                                }
+                                else
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.arriba.dato + "\";\n";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            retorno += "\"" + aux2.dato + "\";\n";
+                        }
+                        if (aux2.anterior != null)
+                        {
+                            if (!string.IsNullOrEmpty(aux2.anterior.dato))
+                            {
+                                if (!string.IsNullOrEmpty(aux2.anterior.Jugador))
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"Pieza: " + aux2.anterior.dato + "\nJugador: " + aux2.anterior.Jugador + "\n(" + aux2.anterior.col + ", " + aux2.anterior.fil + ")\nVida: " + aux2.anterior.vida + "\";\n";
+                                }
+                                else
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.anterior.dato + "\";\n";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            retorno += "\"" + aux2.dato + "\";\n";
                         }
                     }
 
                 }
-                if (aux2.anterior != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.anterior.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.anterior.dato + "\n" + aux2.anterior.Jugador + "\n" + aux2.anterior.col + "  " + aux2.anterior.fil + "\";\n";
-                        if (x == 0)
-                        {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        }
-                        else
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
-                        }
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        if (!string.IsNullOrEmpty(aux2.dato))
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
-                        }
-                    }
 
-                }
                 aux2 = aux2.siguiente;
             }
             x++;
             auxFil = auxFil.abajo;
         }
-        min = "{rank=min;\nroot;\n" + min + "};\n";
-        retorno += min;
-        return retorno;
+        min = "{rank=min;\nroot;\n" + minFijo + "};\n";
+        return (ultimo + retorno + min + Same + ex);
     }
 
-    public string retornaPiezas()     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
+
+    public string textoParaGraficarMatriz4(string usuario4)     // jugador,columna,fila,unidad,"destruida(0 si,1 no)"
     {
         Nodo auxFil = raiz;
         String retorno = "";
+        string min1 = "";
         String min = "";
+        int elPc = 0;
+        Nodo elP = null;
+        int a1 = 0;
+        int a2 = 0;
+        retorno += "root -> \"" + raiz.abajo.dato +"\";\n";
+        //min1 = raiz.siguiente.dato;
+        retorno += "root -> \"" + raiz.siguiente.dato +"\";\n";
         while (auxFil != null)
         {
             Nodo aux2 = auxFil;
             while (aux2 != null)
             {
-                if (aux2.adelante != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.adelante.dato))
-                    {   //"Pieza: " + raiz.abajo.dato + "\nJugador: " + raiz.abajo.Jugador + "\nCoordenadas: (" + raiz.abajo.columna + ", " + raiz.abajo.fila + ")
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + textoParaMatrizLetra3D(aux2) + "\";\n";
-                    }
-
-                }
-                if (aux2.abajo != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.abajo.dato))
+                if (a1==0) {
+                    if (aux2.siguiente != null)
                     {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.abajo.dato + "\n" + aux2.abajo.Jugador + "\n" + aux2.abajo.col + "  " + aux2.abajo.fil + "\";\n";
-                    }
-
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                    }
-
-                }
-                if (aux2.arriba != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.arriba.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.arriba.dato + "\n" + aux2.arriba.Jugador + "\n" + aux2.arriba.col + "  " + aux2.arriba.fil + "\";\n";
-                    }
-
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                    }
-
-                }
-                if (aux2.siguiente != null)
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";\n";
-                        if (x == 0)
-                        {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
+                        if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato)) {
+                            min1 += "\"" + aux2.dato + "\"; \"" + aux2.siguiente.dato + "\";";
+                            retorno += "\"" + aux2.dato + "\" -> \"" + aux2.siguiente.dato + "\";\n";
                         }
-                        else
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"; \"" + aux2.siguiente.dato + "\n" + aux2.siguiente.Jugador + "\n" + aux2.siguiente.col + "  " + aux2.siguiente.fil + "\";}\n";
-                        }
-                    }
+                        
 
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        if (x == 0)
-                        {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        }
-                        else
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
-                        }
                     }
-
                 }
-                if (aux2.anterior != null)
+                if (aux2 != null)
                 {
-                    if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.anterior.dato))
+                    string pieza = aux2.dato;
+                    var chars = pieza.ToCharArray();
+                    int esPieza = chars.Length;
+
+                    if (esPieza > 3)
                     {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\"->\"" + aux2.anterior.dato + "\n" + aux2.anterior.Jugador + "\n" + aux2.anterior.col + "  " + aux2.anterior.fil + "\";\n";
-                        if (x == 0)
+                        if (aux2.Jugador == usuario4)
                         {
-                            min += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        }
-                        else
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                            if (elPc==0) {
+                                elP = aux2;
+                                elPc++;
+                            }
+                            retorno += "\"" + aux2.dato + "\" -> \""+ aux2.dom +"\";\n";
+                            retorno += "\"" + aux2.dato + "\" -> \"" + aux2.letra + "\";\n";
+                            if (aux2.atras != null)
+                            {
+                                if (aux2.atras.Jugador == usuario4) {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.atras.dato + "\";\n";
+                                }
+                                
+                            }
+                            if (aux2.siguiente != null)
+                            {
+                                if (aux2.siguiente.Jugador == usuario4)
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.siguiente.dato + "\";\n";
+                                }
+                                
+                            }
+                            if (aux2.arriba != null)
+                            {
+                                if (aux2.arriba.Jugador == usuario4)
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.arriba.dato + "\";\n";
+                                }
+                                
+                            }
+                            if (aux2.abajo != null)
+                            {
+                                if (aux2.abajo.Jugador == usuario4)
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.abajo.dato + "\";\n";
+                                }
+                                
+                            }
+                            if (aux2.adelante != null)
+                            {
+                                if (aux2.adelante.Jugador == usuario4)
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.adelante.dato + "\";\n";
+                                }
+                                
+                            }
+                            if (aux2.anterior != null)
+                            {
+                                if (aux2.anterior.Jugador == usuario4)
+                                {
+                                    retorno += "\"" + aux2.dato + "\"->\"" + aux2.anterior.dato + "\";\n";
+                                }
+                                
+                            }
+
                         }
                     }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(aux2.dato))
-                    {
-                        retorno += "\"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";\n";
-                        if (!string.IsNullOrEmpty(aux2.dato))
-                        {
-                            retorno += "{rank=same; \"" + aux2.dato + "\n" + aux2.Jugador + "\n" + aux2.col + "  " + aux2.fil + "\";}\n";
+                    else {
+                        if (aux2.siguiente!=null) {
+                            if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.siguiente.dato)) {
+                                
+                                if (true)
+                                {
+                                    //retorno += "\"" + aux2.dato + "\"->\"" + aux2.siguiente.dato + "\";\n";
+                                    //retorno += "{rank=same;\"" + aux2.dato + "\"; \"" + aux2.siguiente.dato + "\";};\n";
+                                }
+                                
+                            }
+
+                        }
+                        if (aux2.abajo != null) {
+                            if (!string.IsNullOrEmpty(aux2.dato) && !string.IsNullOrEmpty(aux2.abajo.dato)) {
+                                
+                                if (true)
+                                {
+                                    //retorno += "\"" + aux2.dato + "\"->\"" + aux2.abajo.dato + "\";\n";
+                                }
+                            }
                         }
                     }
-
                 }
                 aux2 = aux2.siguiente;
+                if (aux2 == null) {
+                    if (auxFil.abajo!=null) {
+                        if (!string.IsNullOrEmpty(auxFil.dato) && !string.IsNullOrEmpty(auxFil.abajo.dato)) {
+                            retorno += "\"" + auxFil.dato + "\"->\"" + auxFil.abajo.dato + "\";\n";
+                        }
+                        
+                    }
+                    
+                }
             }
-            x++;
+            a1++;
+            
             auxFil = auxFil.abajo;
         }
-        min = "{rank=min;\nroot;\n" + min + "};\n";
+
+        min = "{rank=min;root;" + min1 + "};\n";
         retorno += min;
         return retorno;
     }
@@ -1268,6 +1473,90 @@ public class Cubo
         }
         return retorno;
     }
+
+
+    bool banderaSoloPiezas4 = false;
+    public string retornaSoloPiezas4(string jug)     // ------------------------------------------------------------------------------------Retornan Solo Piezas tablero
+    {
+        Nodo auxFil = raiz;
+        String retorno = "";
+        while (auxFil != null)
+        {
+            Nodo aux2 = auxFil;
+            while (aux2 != null)
+            {
+                if (aux2 != null)
+                {
+                    string pieza = aux2.dato;
+                    var chars = pieza.ToCharArray();
+                    int esPieza = chars.Length;
+
+                    if (esPieza > 3)
+                    {
+                        if (aux2.Jugador == jug)
+                        {
+                            if (banderaSoloPiezas4)
+                            {
+                                retorno += "," + aux2.dato;
+                            }
+                            else
+                            {
+                                retorno += aux2.dato;
+                                banderaSoloPiezas4 = true;
+                            }
+                        }
+                    }
+                }
+                aux2 = aux2.siguiente;
+            }
+            auxFil = auxFil.abajo;
+        }
+        return retorno;
+    }
+    // (string pieza, string destruida, int vida)
+    public void modificaPieza(string piezaTablero, string destruida, int vida)     // ----------------------------------------------------------------------------------------- Modifica Pieza Tablero
+    {
+        Nodo auxFil = raiz;
+        while (auxFil != null)
+        {
+            Nodo aux2 = auxFil;
+            while (aux2 != null)
+            {
+                if (aux2 != null)
+                {
+                    if (aux2.dato == piezaTablero)
+                    {
+                        aux2.destruida = destruida;
+                        aux2.vida = vida;
+                    }
+                }
+                aux2 = aux2.siguiente;
+            }
+            auxFil = auxFil.abajo;
+        }
+    }
+    public Nodo retornaDominio(string piezaTablero)     // ----------------------------------------------------------------------------------------- Modifica Pieza Tablero
+    {
+        Nodo auxFil = raiz;
+        while (auxFil != null)
+        {
+            Nodo aux2 = auxFil;
+            while (aux2 != null)
+            {
+                if (aux2 != null)
+                {
+                    if (aux2.dato == piezaTablero)
+                    {
+                        return aux2;
+                    }
+                }
+                aux2 = aux2.siguiente;
+            }
+            auxFil = auxFil.abajo;
+        }
+        return null;
+    }
+
 
 
     //Fin Metodos   

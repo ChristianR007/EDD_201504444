@@ -1,0 +1,17 @@
+digraph G{
+node[shape=box, style=filled, color=Gray95];edge[color=black];rankdir=UD;
+label = "Nivel 4 - Christian33";
+root -> "1";
+root -> "A";
+"A" -> "B";
+"B" -> "Z";
+"Neosatelite77" -> "Z";
+"Neosatelite77" -> "1";
+"Neosatelite77"->"Neosatelite78";
+"1"->"2";
+"Neosatelite78" -> "Z";
+"Neosatelite78" -> "2";
+"Neosatelite78"->"Neosatelite77";
+"2"->"10";
+{rank=min;root;"A"; "B";"B"; "Z";};
+}
